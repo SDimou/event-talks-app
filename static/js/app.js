@@ -227,6 +227,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // Format HTML body slightly if needed (ensure spacing etc)
             let bodyContent = note.content_html;
             
+            const isLong = note.content_text && note.content_text.length > 300;
+            const bodyHtml = isLong 
+                ? `<div class="card-body collapsible-content">
+                       ${bodyContent}
+                       <div class="card-body-fade"></div>
+                   </div>
+                   <button class="btn-read-more" title="Expand release note content">
+                       <span>Read More</span>
+                       <svg xmlns="http://www.w3.org/2005/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s ease; display: inline-block; vertical-align: middle; margin-left: 2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                   </button>`
+                : `<div class="card-body">
+                       ${bodyContent}
+                   </div>`;
+
             card.innerHTML = `
                 <div class="card-header">
                     <div class="card-meta">
@@ -235,9 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <a href="${note.link}" class="badge badge-info" target="_blank" rel="noopener noreferrer">Source Link</a>
                 </div>
-                <div class="card-body">
-                    ${bodyContent}
-                </div>
+                ${bodyHtml}
                 <div class="card-footer">
                     <button class="btn btn-card-copy" title="Copy update text to clipboard">
                         <svg xmlns="http://www.w3.org/2005/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -262,6 +274,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     showToast('Failed to copy to clipboard.');
                 });
             });
+
+            // Add expand/collapse listener if long content
+            if (isLong) {
+                const readMoreBtn = card.querySelector('.btn-read-more');
+                const readMoreSvg = readMoreBtn.querySelector('svg');
+                const readMoreText = readMoreBtn.querySelector('span');
+                readMoreBtn.addEventListener('click', () => {
+                    const isExpanded = card.classList.toggle('expanded');
+                    readMoreText.textContent = isExpanded ? 'Read Less' : 'Read More';
+                    readMoreSvg.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+                });
+            }
 
             // Add tweet button listener
             card.querySelector('.btn-card-tweet').addEventListener('click', () => {

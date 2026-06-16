@@ -41,6 +41,11 @@ body.light-theme {
     --accent-blue-rgb: 37, 99, 235;
 }
 
+/* Smooth transitions for theme toggle */
+body, .card, .controls-card, .search-box, .modal-card, textarea, .tag-chip, .btn {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
 /* Light Theme Element Custom Adjustments */
 body.light-theme .bg-gradient {
     background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
@@ -942,4 +947,55 @@ body {
     .modal-card {
         max-width: 100%;
     }
+}
+
+/* Collapsible Note Cards */
+.collapsible-content {
+    max-height: 150px;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card.expanded .collapsible-content {
+    max-height: 1200px;
+}
+
+.card-body-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: linear-gradient(to top, var(--bg-card), transparent);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.card.expanded .card-body-fade {
+    opacity: 0;
+}
+
+.btn-read-more {
+    background: transparent;
+    border: none;
+    color: var(--accent-blue);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: var(--transition-smooth);
+}
+
+.btn-read-more:hover {
+    color: white;
+}
+
+body.light-theme .btn-read-more:hover {
+    color: #0f172a;
 }

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // State management
     let releaseNotes = [];
     let filteredNotes = [];
-    let activeFilter = 'All';
+    let activeFilters = new Set(['All']);
     let searchQuery = '';
     let currentSelectedNote = null;
 
@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sunIcon = document.querySelector('.theme-icon-sun');
     const moonIcon = document.querySelector('.theme-icon-moon');
     const searchInput = document.getElementById('search-input');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+    const backToTopBtn = document.getElementById('back-to-top-btn');
     const typeFiltersContainer = document.getElementById('type-filters');
     const statsText = document.getElementById('stats-text');
     const sourceBadge = document.getElementById('source-badge');
@@ -53,7 +55,35 @@ document.addEventListener('DOMContentLoaded', () => {
     
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value.toLowerCase().trim();
+        if (searchQuery) {
+            clearSearchBtn.classList.remove('hidden');
+        } else {
+            clearSearchBtn.classList.add('hidden');
+        }
         filterAndRender();
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.add('hidden');
+        filterAndRender();
+        searchInput.focus();
+    });
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+            backToTopBtn.classList.remove('hidden');
+        } else {
+            backToTopBtn.classList.add('hidden');
+        }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 
     // Close Modal Events
@@ -166,14 +196,26 @@ document.addEventListener('DOMContentLoaded', () => {
         typeFiltersContainer.innerHTML = '';
         types.forEach(type => {
             const chip = document.createElement('span');
-            chip.className = `tag-chip ${type === activeFilter ? 'active' : ''}`;
+            chip.className = `tag-chip ${activeFilters.has(type) ? 'active' : ''}`;
             chip.setAttribute('data-type', type);
             chip.textContent = type;
             
             chip.addEventListener('click', () => {
-                document.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('active'));
-                chip.classList.add('active');
-                activeFilter = type;
+                if (type === 'All') {
+                    activeFilters.clear();
+                    activeFilters.add('All');
+                } else {
+                    activeFilters.delete('All');
+                    if (activeFilters.has(type)) {
+                        activeFilters.delete(type);
+                    } else {
+                        activeFilters.add(type);
+                    }
+                    if (activeFilters.size === 0) {
+                        activeFilters.add('All');
+                    }
+                }
+                generateFilterButtons();
                 filterAndRender();
             });
 
@@ -186,8 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let filtered = releaseNotes;
 
         // Apply type filter
-        if (activeFilter !== 'All') {
-            filtered = filtered.filter(note => note.type === activeFilter);
+        if (!activeFilters.has('All')) {
+            filtered = filtered.filter(note => activeFilters.has(note.type));
         }
 
         // Apply search query
@@ -318,16 +360,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetFilters() {
         searchInput.value = '';
         searchQuery = '';
-        activeFilter = 'All';
+        clearSearchBtn.classList.add('hidden');
         
-        // Reset category UI active class
-        document.querySelectorAll('.tag-chip').forEach(c => {
-            if (c.getAttribute('data-type') === 'All') {
-                c.classList.add('active');
-            } else {
-                c.classList.remove('active');
-            }
-        });
+        activeFilters.clear();
+        activeFilters.add('All');
+        generateFilterButtons();
         
         filterAndRender();
     }
@@ -371,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
-            const sanitizedFilter = activeFilter.toLowerCase().replace(/\s+/g, '-');
+            const sanitizedFilter = Array.from(activeFilters).map(f => f.toLowerCase().replace(/\s+/g, '-')).join('-');
             const dateStr = new Date().toISOString().slice(0, 10);
             
             link.setAttribute('href', url);

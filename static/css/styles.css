@@ -999,3 +999,53 @@ body {
 body.light-theme .btn-read-more:hover {
     color: #0f172a;
 }
+
+/* Search Clear Button */
+.clear-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+.clear-btn:hover {
+    color: white;
+}
+body.light-theme .clear-btn:hover {
+    color: black;
+}
+
+/* Back to Top Floating Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--primary-gradient);
+    border: 1px solid var(--border-color);
+    color: white;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    z-index: 90;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.back-to-top:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+.back-to-top.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+    display: flex !important; /* overrides display none to allow opacity transitions */
+}

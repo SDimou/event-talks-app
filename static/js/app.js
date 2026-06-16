@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const refreshBtn = document.getElementById('refresh-btn');
     const exportBtn = document.getElementById('export-btn');
     const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeText = document.getElementById('theme-text');
     const sunIcon = document.querySelector('.theme-icon-sun');
     const moonIcon = document.querySelector('.theme-icon-moon');
     const searchInput = document.getElementById('search-input');
@@ -600,12 +601,14 @@ document.addEventListener('DOMContentLoaded', () => {
             moonIcon.classList.remove('hidden');
             themeToggleBtn.setAttribute('aria-pressed', 'true');
             themeToggleBtn.setAttribute('aria-label', 'Switch to Dark Theme');
+            if (themeText) themeText.textContent = 'Light Mode';
         } else {
             document.body.classList.remove('light-theme');
             sunIcon.classList.remove('hidden');
             moonIcon.classList.add('hidden');
             themeToggleBtn.setAttribute('aria-pressed', 'false');
             themeToggleBtn.setAttribute('aria-label', 'Switch to Light Theme');
+            if (themeText) themeText.textContent = 'Dark Mode';
         }
     }
 
@@ -619,12 +622,14 @@ document.addEventListener('DOMContentLoaded', () => {
             moonIcon.classList.remove('hidden');
             themeToggleBtn.setAttribute('aria-pressed', 'true');
             themeToggleBtn.setAttribute('aria-label', 'Switch to Dark Theme');
+            if (themeText) themeText.textContent = 'Light Mode';
             showToast('Swapped to Light Theme');
         } else {
             sunIcon.classList.remove('hidden');
             moonIcon.classList.add('hidden');
             themeToggleBtn.setAttribute('aria-pressed', 'false');
             themeToggleBtn.setAttribute('aria-label', 'Switch to Light Theme');
+            if (themeText) themeText.textContent = 'Dark Mode';
             showToast('Swapped to Dark Theme');
         }
     }

@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hashtag helpers
     hashtagChips.forEach(chip => {
         chip.setAttribute('tabindex', '0');
+        chip.setAttribute('role', 'button');
+        chip.setAttribute('aria-label', `Add hashtag ${chip.getAttribute('data-tag')}`);
         chip.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -462,6 +464,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Focus Trapping and Escape Key Handler for Modal
+    function onModalKeyDown(e) {
+        if (e.key === 'Escape') {
+            hideTweetModal();
+            return;
+        }
+        
+        if (e.key === 'Tab') {
+            const focusables = Array.from(tweetModal.querySelectorAll('button, textarea, [tabindex="0"]'))
+                .filter(el => !el.classList.contains('hidden') && el.offsetParent !== null);
+            
+            if (focusables.length === 0) return;
+            
+            const firstEl = focusables[0];
+            const lastEl = focusables[focusables.length - 1];
+            
+            if (e.shiftKey) { // Shift + Tab
+                if (document.activeElement === firstEl) {
+                    lastEl.focus();
+                    e.preventDefault();
+                }
+            } else { // Tab
+                if (document.activeElement === lastEl) {
+                    firstEl.focus();
+                    e.preventDefault();
+                }
+            }
+        }
+    }
+
     // Tweet Modal Logic
     function showTweetModal(note) {
         modalTriggerElement = document.activeElement;
@@ -495,9 +527,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         tweetModal.classList.remove('hidden');
         tweetTextarea.focus();
+        document.addEventListener('keydown', onModalKeyDown);
     }
 
     function hideTweetModal() {
+        document.removeEventListener('keydown', onModalKeyDown);
         tweetModal.classList.add('hidden');
         currentSelectedNote = null;
         if (modalTriggerElement) {
@@ -528,10 +562,14 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('light-theme');
             sunIcon.classList.add('hidden');
             moonIcon.classList.remove('hidden');
+            themeToggleBtn.setAttribute('aria-pressed', 'true');
+            themeToggleBtn.setAttribute('aria-label', 'Switch to Dark Theme');
         } else {
             document.body.classList.remove('light-theme');
             sunIcon.classList.remove('hidden');
             moonIcon.classList.add('hidden');
+            themeToggleBtn.setAttribute('aria-pressed', 'false');
+            themeToggleBtn.setAttribute('aria-label', 'Switch to Light Theme');
         }
     }
 
@@ -543,10 +581,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isLightTheme) {
             sunIcon.classList.add('hidden');
             moonIcon.classList.remove('hidden');
+            themeToggleBtn.setAttribute('aria-pressed', 'true');
+            themeToggleBtn.setAttribute('aria-label', 'Switch to Dark Theme');
             showToast('Swapped to Light Theme');
         } else {
             sunIcon.classList.remove('hidden');
             moonIcon.classList.add('hidden');
+            themeToggleBtn.setAttribute('aria-pressed', 'false');
+            themeToggleBtn.setAttribute('aria-label', 'Switch to Light Theme');
             showToast('Swapped to Dark Theme');
         }
     }

@@ -30,17 +30,17 @@
             </div>
             
             <div class="actions-area">
-                <button id="theme-toggle" class="btn btn-secondary btn-icon-only" title="Toggle Light/Dark Theme" aria-label="Toggle Light/Dark Theme">
+                <button id="theme-toggle" class="btn btn-secondary btn-icon-only" title="Toggle Light/Dark Theme" aria-label="Toggle Light/Dark Theme" aria-pressed="false">
                     <!-- Sun icon for dark mode -->
                     <svg class="theme-icon-sun" aria-hidden="true" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                     <!-- Moon icon for light mode -->
                     <svg class="theme-icon-moon hidden" aria-hidden="true" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
-                <button id="export-btn" class="btn btn-secondary" title="Export current filtered list to CSV">
+                <button id="export-btn" class="btn btn-secondary" title="Export current filtered list to CSV" aria-label="Export filtered release notes to CSV">
                     <svg xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     <span>Export CSV</span>
                 </button>
-                <button id="refresh-btn" class="btn btn-primary" title="Refresh Release Notes">
+                <button id="refresh-btn" class="btn btn-primary" title="Refresh Release Notes" aria-label="Refresh release notes feed">
                     <svg class="refresh-icon" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
                     <span>Refresh Feed</span>
                 </button>
@@ -63,26 +63,26 @@
             </div>
             
             <div class="stats-bar">
-                <span id="stats-text">Loading updates...</span>
+                <span id="stats-text" aria-live="polite">Loading updates...</span>
                 <span id="source-badge" class="badge badge-info hidden">Live</span>
             </div>
         </section>
 
         <!-- Feed List -->
         <main class="feed-container">
-            <div id="loading-state" class="state-container">
+            <div id="loading-state" class="state-container" role="status" aria-busy="true">
                 <div class="spinner"></div>
                 <p>Parsing feed & formatting updates...</p>
             </div>
             
-            <div id="error-state" class="state-container hidden">
+            <div id="error-state" class="state-container hidden" role="alert">
                 <svg class="error-icon" xmlns="http://www.w3.org/2005/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                 <h3>Failed to load release notes</h3>
                 <p id="error-msg">Something went wrong while communicating with the server.</p>
                 <button id="retry-btn" class="btn btn-secondary">Retry Connection</button>
             </div>
 
-            <div id="empty-state" class="state-container hidden">
+            <div id="empty-state" class="state-container hidden" role="status">
                 <svg class="empty-icon" xmlns="http://www.w3.org/2005/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                 <h3>No updates found</h3>
                 <p>Try resetting filters or adjusting your search keywords.</p>
@@ -148,10 +148,10 @@
     </div>
 
     <!-- Notification Toast -->
-    <div id="toast" class="toast hidden">Copied to clipboard!</div>
+    <div id="toast" class="toast hidden" role="status" aria-live="polite">Copied to clipboard!</div>
 
     <!-- Back to Top Button -->
-    <button id="back-to-top-btn" class="back-to-top hidden" title="Back to Top">
+    <button id="back-to-top-btn" class="back-to-top hidden" title="Back to Top" aria-label="Scroll back to top">
         <svg xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
     </button>
     

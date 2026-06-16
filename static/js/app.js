@@ -117,10 +117,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Copy to Clipboard Action
-    copyTweetBtn.addEventListener('click', () => {
+    copyTweetBtn.addEventListener('click', (e) => {
         const text = tweetTextarea.value;
         navigator.clipboard.writeText(text).then(() => {
             showToast('Copied to clipboard!');
+            const btn = e.currentTarget;
+            const span = btn.querySelector('span');
+            const origText = span.textContent;
+            span.textContent = 'Copied!';
+            btn.disabled = true;
+            setTimeout(() => {
+                span.textContent = origText;
+                btn.disabled = false;
+            }, 1500);
         }).catch(err => {
             console.error('Failed to copy text: ', err);
             showToast('Failed to copy to clipboard.');
@@ -307,10 +316,19 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             // Add copy button listener
-            card.querySelector('.btn-card-copy').addEventListener('click', () => {
+            card.querySelector('.btn-card-copy').addEventListener('click', (e) => {
                 const textToCopy = `[${note.type}] BigQuery (${note.date}): ${note.content_text}\nSource: ${note.link}`;
                 navigator.clipboard.writeText(textToCopy).then(() => {
                     showToast('Copied to clipboard!');
+                    const btn = e.currentTarget;
+                    const span = btn.querySelector('span');
+                    const origText = span.textContent;
+                    span.textContent = 'Copied!';
+                    btn.disabled = true;
+                    setTimeout(() => {
+                        span.textContent = origText;
+                        btn.disabled = false;
+                    }, 1500);
                 }).catch(err => {
                     console.error('Failed to copy text: ', err);
                     showToast('Failed to copy to clipboard.');
@@ -469,12 +487,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const count = text.length;
         charCounter.textContent = `${count} / 280`;
         
-        if (count > 280) {
+        if (count > 280 || count === 0) {
             charCounter.classList.add('error');
             charWarning.classList.remove('hidden');
+            sendTweetBtn.disabled = true;
         } else {
             charCounter.classList.remove('error');
             charWarning.classList.add('hidden');
+            sendTweetBtn.disabled = false;
         }
     }
 

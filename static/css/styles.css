@@ -290,6 +290,13 @@ body {
     border: 1px solid transparent;
 }
 
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
 .btn-primary {
     background: var(--primary-gradient);
     color: white;

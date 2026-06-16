@@ -22,7 +22,6 @@ A modern, responsive dashboard to monitor, search, filter, and share Google Clou
 ```
 ├── app.py                     # Flask backend router & RSS Parser (BeautifulSoup)
 ├── notes_cache.json           # Local cache file storing feed history
-├── demo_bad_code.py           # Batch processing safety-demo script
 ├── templates/
 │   └── index.html             # UI layout and social modal dialogs
 └── static/

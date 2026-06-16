@@ -19,6 +19,8 @@ A modern, responsive dashboard to monitor, search, filter, and share Google Clou
 * **Multi-Select Category Chips:** Allows users to select multiple release note types simultaneously (e.g., viewing *Features* and *Issues* together).
 * **Inline Search Clear:** Provides a quick `×` clear button inside the search box that resets keywords instantly.
 * **Floating Back-to-Top Button:** A scroll-reactive button that returns readers smoothly to the top of the release notes list.
+* **Composer Safety Lockout:** Automatically disables posting on X/Twitter if the draft is empty or exceeds the 280-character limit.
+* **Inline Copy Feedback:** Swaps the copy button label to "Copied!" for 1.5 seconds, locking click actions to prevent redundant clicks.
 
 ---
 

@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     // State management
     let releaseNotes = [];
+    let filteredNotes = [];
     let activeFilter = 'All';
     let searchQuery = '';
     let currentSelectedNote = null;
 
     // DOM Elements
     const refreshBtn = document.getElementById('refresh-btn');
+    const exportBtn = document.getElementById('export-btn');
     const searchInput = document.getElementById('search-input');
     const typeFiltersContainer = document.getElementById('type-filters');
     const statsText = document.getElementById('stats-text');
@@ -40,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     refreshBtn.addEventListener('click', () => fetchReleaseNotes(true));
+    exportBtn.addEventListener('click', exportToCSV);
     retryBtn.addEventListener('click', () => fetchReleaseNotes(true));
     resetFiltersBtn.addEventListener('click', resetFilters);
     
@@ -194,6 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update stats
         statsText.textContent = `Showing ${filtered.length} of ${releaseNotes.length} updates`;
 
+        filteredNotes = filtered;
+
         // Render feed items
         if (filtered.length === 0) {
             showState('empty');
@@ -229,6 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${bodyContent}
                 </div>
                 <div class="card-footer">
+                    <button class="btn btn-card-copy" title="Copy update text to clipboard">
+                        <svg xmlns="http://www.w3.org/2005/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-right: 4px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span>Copy Update</span>
+                    </button>
                     <button class="btn btn-card-tweet" title="Share this release note">
                         <svg class="twitter-logo" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 4px;">
                             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -238,6 +247,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             
+            // Add copy button listener
+            card.querySelector('.btn-card-copy').addEventListener('click', () => {
+                const textToCopy = `[${note.type}] BigQuery (${note.date}): ${note.content_text}\nSource: ${note.link}`;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToast('Copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    showToast('Failed to copy to clipboard.');
+                });
+            });
+
             // Add tweet button listener
             card.querySelector('.btn-card-tweet').addEventListener('click', () => {
                 showTweetModal(note);
@@ -281,6 +301,62 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         filterAndRender();
+    }
+
+    // Export current filtered list to CSV
+    function exportToCSV() {
+        if (!filteredNotes || filteredNotes.length === 0) {
+            showToast('No notes available to export.');
+            return;
+        }
+
+        // CSV Header
+        const headers = ['ID', 'Date', 'Updated', 'Type', 'Link', 'Content (Text)'];
+        
+        // Escape CSV values helper
+        const escapeCSV = (val) => {
+            if (val === null || val === undefined) return '';
+            let stringVal = val.toString().trim();
+            // Escape double quotes by doubling them
+            if (stringVal.includes('"') || stringVal.includes(',') || stringVal.includes('\n') || stringVal.includes('\r')) {
+                stringVal = `"${stringVal.replace(/"/g, '""')}"`;
+            }
+            return stringVal;
+        };
+
+        const csvRows = [
+            headers.join(','),
+            ...filteredNotes.map(note => [
+                note.id,
+                note.date,
+                note.updated,
+                note.type,
+                note.link,
+                note.content_text
+            ].map(escapeCSV).join(','))
+        ];
+
+        const csvContent = csvRows.join('\r\n');
+        
+        try {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const sanitizedFilter = activeFilter.toLowerCase().replace(/\s+/g, '-');
+            const dateStr = new Date().toISOString().slice(0, 10);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `bigquery_release_notes_${sanitizedFilter}_${dateStr}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast('Exported filtered notes to CSV!');
+        } catch (err) {
+            console.error('Failed to export CSV: ', err);
+            showToast('Failed to export CSV.');
+        }
     }
 
     // Tweet Modal Logic

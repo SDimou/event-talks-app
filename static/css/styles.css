@@ -99,6 +99,12 @@ body {
     gap: 20px;
 }
 
+.actions-area {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
 .logo-area {
     display: flex;
     align-items: center;
@@ -487,27 +493,33 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.btn-card-tweet {
+.btn-card-tweet, .btn-card-copy {
     padding: 8px 14px;
     font-size: 0.85rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
     border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
 }
 
-.btn-card-tweet:hover {
+.btn-card-copy {
+    margin-right: auto; /* Push copy button to the left, and tweet button to the right */
+}
+
+.btn-card-tweet:hover, .btn-card-copy:hover {
     background: white;
     color: black;
     border-color: white;
 }
 
-.btn-card-tweet svg {
+.btn-card-tweet svg, .btn-card-copy svg {
     margin-right: 2px;
     transition: transform 0.3s ease;
 }
 
-.btn-card-tweet:hover svg {
+.btn-card-tweet:hover svg, .btn-card-copy:hover svg {
     transform: scale(1.1);
 }
 

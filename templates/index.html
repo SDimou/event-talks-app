@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Hub</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/google-cloud.png">
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="bg-glow"></div>
+    
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <img src="https://img.icons8.com/color/96/google-cloud.png" alt="Google Cloud Logo" class="logo">
+                <div class="title-group">
+                    <h1>BigQuery Release Notes</h1>
+                    <p class="subtitle">Stay updated with the latest Google Cloud BigQuery features, issues, and deprecations</p>
+                </div>
+            </div>
+            
+            <div class="actions-area">
+                <button id="refresh-btn" class="btn btn-primary" title="Refresh Release Notes">
+                    <svg class="refresh-icon" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    <span>Refresh Feed</span>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Controls (Search & Filters) -->
+        <section class="controls-card">
+            <div class="search-box">
+                <svg class="search-icon" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="search-input" placeholder="Search release notes by keywords, dates, or details...">
+            </div>
+            
+            <div class="filters-group">
+                <span class="filter-label">Filter by Type:</span>
+                <div class="filter-tags" id="type-filters">
+                    <!-- Dynamic categories will be generated here -->
+                </div>
+            </div>
+            
+            <div class="stats-bar">
+                <span id="stats-text">Loading updates...</span>
+                <span id="source-badge" class="badge badge-info hidden">Live</span>
+            </div>
+        </section>
+
+        <!-- Feed List -->
+        <main class="feed-container">
+            <div id="loading-state" class="state-container">
+                <div class="spinner"></div>
+                <p>Parsing feed & formatting updates...</p>
+            </div>
+            
+            <div id="error-state" class="state-container hidden">
+                <svg class="error-icon" xmlns="http://www.w3.org/2005/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <h3>Failed to load release notes</h3>
+                <p id="error-msg">Something went wrong while communicating with the server.</p>
+                <button id="retry-btn" class="btn btn-secondary">Retry Connection</button>
+            </div>
+
+            <div id="empty-state" class="state-container hidden">
+                <svg class="empty-icon" xmlns="http://www.w3.org/2005/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <h3>No updates found</h3>
+                <p>Try resetting filters or adjusting your search keywords.</p>
+                <button id="reset-filters-btn" class="btn btn-secondary">Reset Filters</button>
+            </div>
+
+            <div id="feed-list" class="feed-list">
+                <!-- Cards will be populated here by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Tweet Customizer Modal -->
+    <div id="tweet-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2>Share on X / Twitter</h2>
+                <button id="close-modal-btn" class="close-btn">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="update-preview-box">
+                    <span class="preview-label">Source Update Snippet:</span>
+                    <blockquote id="source-update-text"></blockquote>
+                </div>
+                
+                <div class="tweet-edit-area">
+                    <label for="tweet-textarea" class="preview-label">Draft Tweet:</label>
+                    <textarea id="tweet-textarea" rows="5" maxlength="500"></textarea>
+                    
+                    <div class="tweet-meta">
+                        <span id="char-counter" class="char-counter">0 / 280</span>
+                        <span id="char-warning" class="char-warning hidden">Exceeds standard 280-char limit</span>
+                    </div>
+                </div>
+
+                <div class="tags-helper">
+                    <span class="helper-label">Add Hashtags:</span>
+                    <div class="helper-tags">
+                        <span class="tag-chip hashtag-chip" data-tag="#BigQuery">#BigQuery</span>
+                        <span class="tag-chip hashtag-chip" data-tag="#GoogleCloud">#GoogleCloud</span>
+                        <span class="tag-chip hashtag-chip" data-tag="#GCP">#GCP</span>
+                        <span class="tag-chip hashtag-chip" data-tag="#DataAnalytics">#DataAnalytics</span>
+                        <span class="tag-chip hashtag-chip" data-tag="#GenerativeAI">#GenerativeAI</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="copy-tweet-btn" class="btn btn-secondary">
+                    <svg xmlns="http://www.w3.org/2005/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                    <span>Copy Text</span>
+                </button>
+                <button id="send-tweet-btn" class="btn btn-twitter">
+                    <!-- SVG logo for X / Twitter -->
+                    <svg class="twitter-logo" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    <span>Post on X</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">Copied to clipboard!</div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

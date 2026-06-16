@@ -11,6 +11,8 @@ A modern, responsive dashboard to monitor, search, filter, and share Google Clou
 * **Instant Filter & Search:** Real-time search matching over dates, categories, and content text, paired with dynamic category filter chips.
 * **Social Composer (X / Twitter):** Composers that auto-draft update updates, check character limitations dynamically (280 characters), and provide quick hashtag suggestions.
 * **Defensive CSS Styling:** Generic style fallbacks are configured so that if Google adds unrecognized release note categories to their feed, the UI elements (badges, indicator borders, tags) gracefully render using theme-integrated styling.
+* **One-Click Copy:** Every card contains a "Copy Update" button that formats the type, date, and description for easy clipboard sharing.
+* **Export to CSV:** A header-level "Export CSV" button outputs the currently searched and filtered cards into a spreadsheet-ready `.csv` file.
 
 ---
 

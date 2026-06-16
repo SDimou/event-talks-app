@@ -21,6 +21,8 @@ A modern, responsive dashboard to monitor, search, filter, and share Google Clou
 * **Floating Back-to-Top Button:** A scroll-reactive button that returns readers smoothly to the top of the release notes list.
 * **Composer Safety Lockout:** Automatically disables posting on X/Twitter if the draft is empty or exceeds the 280-character limit.
 * **Inline Copy Feedback:** Swaps the copy button label to "Copied!" for 1.5 seconds, locking click actions to prevent redundant clicks.
+* **Keyboard Accessibility:** Fully navigable filter tags and social modal elements with tab-index configurations and Space/Enter trigger key bindings.
+* **ARIA & Focus Management:** Integrated dialog roles, hidden decorative icons, expanded status bindings, and active element focus restoration handlers.
 
 ---
 

@@ -13,6 +13,7 @@ A modern, responsive dashboard to monitor, search, filter, and share Google Clou
 * **Defensive CSS Styling:** Generic style fallbacks are configured so that if Google adds unrecognized release note categories to their feed, the UI elements (badges, indicator borders, tags) gracefully render using theme-integrated styling.
 * **One-Click Copy:** Every card contains a "Copy Update" button that formats the type, date, and description for easy clipboard sharing.
 * **Export to CSV:** A header-level "Export CSV" button outputs the currently searched and filtered cards into a spreadsheet-ready `.csv` file.
+* **Light/Dark Mode Toggle:** An actions-bar button that swaps the page color palette (clean slate and blues for light theme, deep navy and violet for dark theme) instantly via CSS custom variables, caching user preference in `localStorage`.
 
 ---
 

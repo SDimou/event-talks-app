@@ -25,6 +25,142 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Light Theme Variables & Overrides */
+body.light-theme {
+    --bg-dark: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.75);
+    --border-color: rgba(15, 23, 42, 0.08);
+    --border-hover: rgba(15, 23, 42, 0.15);
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    
+    --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    --accent-blue: #2563eb;
+    --accent-blue-rgb: 37, 99, 235;
+}
+
+/* Light Theme Element Custom Adjustments */
+body.light-theme .bg-gradient {
+    background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.04) 0%, transparent 45%);
+}
+
+body.light-theme .bg-glow {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+}
+
+body.light-theme .title-group h1 {
+    background: linear-gradient(135deg, #0f172a 30%, #2563eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.light-theme .search-box {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .tag-chip {
+    background: rgba(15, 23, 42, 0.03);
+    color: var(--text-secondary);
+}
+
+body.light-theme .tag-chip:hover {
+    background: rgba(15, 23, 42, 0.06);
+    color: var(--text-primary);
+}
+
+body.light-theme .tag-chip.active {
+    color: white;
+}
+
+body.light-theme .card-body code {
+    background: rgba(15, 23, 42, 0.05);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: #0f172a;
+}
+
+body.light-theme .card-footer {
+    border-top-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .btn-card-tweet, body.light-theme .btn-card-copy {
+    background: rgba(15, 23, 42, 0.02);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: var(--text-secondary);
+}
+
+body.light-theme .btn-card-tweet:hover, body.light-theme .btn-card-copy:hover {
+    background: #0f172a;
+    color: white;
+    border-color: #0f172a;
+}
+
+/* Light Theme Modals */
+body.light-theme .modal-card {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .modal-header h2 {
+    color: #0f172a;
+}
+
+body.light-theme .modal-header {
+    border-bottom-color: rgba(15, 23, 42, 0.08);
+}
+
+body.light-theme .update-preview-box {
+    background: rgba(15, 23, 42, 0.03);
+    border-color: rgba(15, 23, 42, 0.08);
+}
+
+body.light-theme #source-update-text {
+    color: #64748b;
+}
+
+body.light-theme .tweet-edit-area textarea {
+    background: rgba(15, 23, 42, 0.02);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: #0f172a;
+}
+
+body.light-theme .modal-footer {
+    border-top-color: rgba(15, 23, 42, 0.08);
+}
+
+body.light-theme .btn-twitter {
+    background: #0f172a;
+    color: white;
+}
+
+body.light-theme .btn-twitter:hover {
+    background: #1e293b;
+}
+
+body.light-theme .close-btn:hover {
+    background: rgba(15, 23, 42, 0.05);
+    color: #0f172a;
+}
+
+body.light-theme .preview-label, body.light-theme .helper-label {
+    color: #475569;
+}
+
+/* Icon Button Styles */
+.btn-icon-only {
+    padding: 10px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;

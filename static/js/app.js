@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const refreshBtn = document.getElementById('refresh-btn');
     const exportBtn = document.getElementById('export-btn');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const sunIcon = document.querySelector('.theme-icon-sun');
+    const moonIcon = document.querySelector('.theme-icon-moon');
     const searchInput = document.getElementById('search-input');
     const typeFiltersContainer = document.getElementById('type-filters');
     const statsText = document.getElementById('stats-text');
@@ -38,11 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.getElementById('toast');
 
     // Initialize application
+    initTheme();
     fetchReleaseNotes();
 
     // Event Listeners
     refreshBtn.addEventListener('click', () => fetchReleaseNotes(true));
     exportBtn.addEventListener('click', exportToCSV);
+    themeToggleBtn.addEventListener('click', toggleTheme);
     retryBtn.addEventListener('click', () => fetchReleaseNotes(true));
     resetFiltersBtn.addEventListener('click', resetFilters);
     
@@ -409,6 +414,36 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             charCounter.classList.remove('error');
             charWarning.classList.add('hidden');
+        }
+    }
+
+    // Initialize Theme from localStorage
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        } else {
+            document.body.classList.remove('light-theme');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        }
+    }
+
+    // Toggle Theme handler
+    function toggleTheme() {
+        const isLightTheme = document.body.classList.toggle('light-theme');
+        localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+        
+        if (isLightTheme) {
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+            showToast('Swapped to Light Theme');
+        } else {
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+            showToast('Swapped to Dark Theme');
         }
     }
 

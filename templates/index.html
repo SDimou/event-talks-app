@@ -30,11 +30,11 @@
             </div>
             
             <div class="actions-area">
-                <button id="theme-toggle" class="btn btn-secondary btn-icon-only" title="Toggle Light/Dark Theme">
+                <button id="theme-toggle" class="btn btn-secondary btn-icon-only" title="Toggle Light/Dark Theme" aria-label="Toggle Light/Dark Theme">
                     <!-- Sun icon for dark mode -->
-                    <svg class="theme-icon-sun" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="theme-icon-sun" aria-hidden="true" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                     <!-- Moon icon for light mode -->
-                    <svg class="theme-icon-moon hidden" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg class="theme-icon-moon hidden" aria-hidden="true" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
                 <button id="export-btn" class="btn btn-secondary" title="Export current filtered list to CSV">
                     <svg xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -50,14 +50,14 @@
         <!-- Controls (Search & Filters) -->
         <section class="controls-card">
             <div class="search-box">
-                <svg class="search-icon" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                <input type="text" id="search-input" placeholder="Search release notes by keywords, dates, or details...">
-                <button id="clear-search-btn" class="clear-btn hidden" title="Clear Search">&times;</button>
+                <svg class="search-icon" aria-hidden="true" xmlns="http://www.w3.org/2005/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="search-input" placeholder="Search release notes by keywords, dates, or details..." aria-label="Search release notes">
+                <button id="clear-search-btn" class="clear-btn hidden" title="Clear Search" aria-label="Clear Search">&times;</button>
             </div>
             
             <div class="filters-group">
                 <span class="filter-label">Filter by Type:</span>
-                <div class="filter-tags" id="type-filters">
+                <div class="filter-tags" id="type-filters" role="group" aria-label="Filter updates by type">
                     <!-- Dynamic categories will be generated here -->
                 </div>
             </div>
@@ -96,11 +96,11 @@
     </div>
 
     <!-- Tweet Customizer Modal -->
-    <div id="tweet-modal" class="modal-overlay hidden">
+    <div id="tweet-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div class="modal-card">
             <div class="modal-header">
-                <h2>Share on X / Twitter</h2>
-                <button id="close-modal-btn" class="close-btn">&times;</button>
+                <h2 id="modal-title">Share on X / Twitter</h2>
+                <button id="close-modal-btn" class="close-btn" aria-label="Close modal">&times;</button>
             </div>
             
             <div class="modal-body">

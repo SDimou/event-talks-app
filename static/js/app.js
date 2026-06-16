@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFilters = new Set(['All']);
     let searchQuery = '';
     let currentSelectedNote = null;
+    let modalTriggerElement = null;
 
     // DOM Elements
     const refreshBtn = document.getElementById('refresh-btn');
@@ -97,6 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hashtag helpers
     hashtagChips.forEach(chip => {
+        chip.setAttribute('tabindex', '0');
+        chip.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                chip.click();
+            }
+        });
         chip.addEventListener('click', () => {
             const hashtag = chip.getAttribute('data-tag');
             let text = tweetTextarea.value;
@@ -207,8 +215,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const chip = document.createElement('span');
             chip.className = `tag-chip ${activeFilters.has(type) ? 'active' : ''}`;
             chip.setAttribute('data-type', type);
+            chip.setAttribute('tabindex', '0');
+            chip.setAttribute('role', 'button');
+            chip.setAttribute('aria-pressed', activeFilters.has(type) ? 'true' : 'false');
             chip.textContent = type;
             
+            chip.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    chip.click();
+                }
+            });
+
             chip.addEventListener('click', () => {
                 if (type === 'All') {
                     activeFilters.clear();
@@ -284,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
                        ${bodyContent}
                        <div class="card-body-fade"></div>
                    </div>
-                   <button class="btn-read-more" title="Expand release note content">
+                   <button class="btn-read-more" title="Expand release note content" aria-expanded="false">
                        <span>Read More</span>
                        <svg xmlns="http://www.w3.org/2005/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s ease; display: inline-block; vertical-align: middle; margin-left: 2px;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                    </button>`
@@ -342,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const readMoreText = readMoreBtn.querySelector('span');
                 readMoreBtn.addEventListener('click', () => {
                     const isExpanded = card.classList.toggle('expanded');
+                    readMoreBtn.setAttribute('aria-expanded', isExpanded);
                     readMoreText.textContent = isExpanded ? 'Read Less' : 'Read More';
                     readMoreSvg.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
                 });
@@ -445,6 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Tweet Modal Logic
     function showTweetModal(note) {
+        modalTriggerElement = document.activeElement;
         currentSelectedNote = note;
         
         // Display source preview snippet
@@ -480,6 +500,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideTweetModal() {
         tweetModal.classList.add('hidden');
         currentSelectedNote = null;
+        if (modalTriggerElement) {
+            modalTriggerElement.focus();
+        }
     }
 
     function updateCharCount() {

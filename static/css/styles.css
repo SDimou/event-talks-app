@@ -285,6 +285,8 @@ body {
 /* Category Specific Active Tags */
 .tag-chip.active {
     color: white;
+    background: var(--color-general);
+    border-color: transparent;
 }
 
 .tag-chip.active[data-type="All"] {
@@ -328,6 +330,9 @@ body {
     border-radius: 6px;
     font-weight: 600;
     font-size: 0.75rem;
+    background: rgba(139, 92, 246, 0.15);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 .badge-info {
@@ -393,6 +398,7 @@ body {
     left: 0;
     width: 4px;
     height: 100%;
+    background: var(--color-general);
 }
 
 .card.card-feature::before { background: var(--color-feature); }

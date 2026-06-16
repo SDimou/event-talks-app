@@ -108,9 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = forceRefresh ? '/api/release-notes?refresh=true' : '/api/release-notes';
 
         fetch(url)
-            .getJson = () => {} // placeholder
-        
-        fetch(url)
             .then(res => {
                 if (!res.ok) throw new Error(`Server returned status ${res.status}`);
                 return res.json();

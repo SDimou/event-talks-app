@@ -22,7 +22,10 @@ def run_batch():
    items = [{'price': 10}, {'price': 20}, {'price': 100}]
   
    u = get_user_data(users, 3)
-   print("User found: " + u['name']) # Will crash if None
+   if u:
+       print("User found: " + u['name'])
+   else:
+       print("User not found")
   
    print("Total: " + str(process_payments(items)))
 

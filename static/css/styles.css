@@ -1062,3 +1062,11 @@ body.light-theme .clear-btn:hover {
     transform: scale(0.8);
     display: flex !important; /* overrides display none to allow opacity transitions */
 }
+
+/* Pagination Styling */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}

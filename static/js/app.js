@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let searchQuery = '';
     let currentSelectedNote = null;
     let modalTriggerElement = null;
+    const itemsPerPage = 15;
+    let visibleCount = itemsPerPage;
 
     // DOM Elements
     const refreshBtn = document.getElementById('refresh-btn');
@@ -20,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const statsText = document.getElementById('stats-text');
     const sourceBadge = document.getElementById('source-badge');
     const feedList = document.getElementById('feed-list');
+    const paginationContainer = document.getElementById('pagination-container');
+    const loadMoreBtn = document.getElementById('load-more-btn');
     
     // State wrappers
     const loadingState = document.getElementById('loading-state');
@@ -54,6 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
     retryBtn.addEventListener('click', () => fetchReleaseNotes(true));
     resetFiltersBtn.addEventListener('click', resetFilters);
     
+    loadMoreBtn.addEventListener('click', () => {
+        const oldVisibleCount = visibleCount;
+        visibleCount += itemsPerPage;
+        filterAndRender(true, oldVisibleCount);
+    });
+    
     searchInput.addEventListener('input', (e) => {
         searchQuery = e.target.value.toLowerCase().trim();
         if (searchQuery) {
@@ -61,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             clearSearchBtn.classList.add('hidden');
         }
+        visibleCount = itemsPerPage;
         filterAndRender();
     });
 
@@ -68,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.value = '';
         searchQuery = '';
         clearSearchBtn.classList.add('hidden');
+        visibleCount = itemsPerPage;
         filterAndRender();
         searchInput.focus();
     });
@@ -183,6 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Populate filters
                     generateFilterButtons();
                     
+                    // Reset pagination
+                    visibleCount = itemsPerPage;
+                    
                     // Filter and Render
                     filterAndRender();
                 } else {
@@ -244,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         activeFilters.add('All');
                     }
                 }
+                visibleCount = itemsPerPage;
                 generateFilterButtons();
                 filterAndRender();
             });
@@ -253,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Filter and Render Feed
-    function filterAndRender() {
+    function filterAndRender(keepFocus = false, oldVisibleCount = 0) {
         let filtered = releaseNotes;
 
         // Apply type filter
@@ -270,17 +286,36 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Update stats
-        statsText.textContent = `Showing ${filtered.length} of ${releaseNotes.length} updates`;
-
         filteredNotes = filtered;
 
         // Render feed items
         if (filtered.length === 0) {
             showState('empty');
+            paginationContainer.classList.add('hidden');
         } else {
             showState('feed');
-            renderFeed(filtered);
+            
+            // Slice the notes based on pagination
+            const notesToRender = filtered.slice(0, visibleCount);
+            renderFeed(notesToRender);
+            
+            // Show or hide "Load More" button
+            if (filtered.length > visibleCount) {
+                paginationContainer.classList.remove('hidden');
+                statsText.textContent = `Showing ${notesToRender.length} of ${filtered.length} updates (total ${releaseNotes.length})`;
+            } else {
+                paginationContainer.classList.add('hidden');
+                statsText.textContent = `Showing ${filtered.length} of ${releaseNotes.length} updates`;
+            }
+            
+            if (keepFocus && oldVisibleCount > 0) {
+                const cards = feedList.querySelectorAll('.card');
+                if (cards[oldVisibleCount]) {
+                    cards[oldVisibleCount].setAttribute('tabindex', '-1');
+                    cards[oldVisibleCount].focus();
+                    cards[oldVisibleCount].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
         }
     }
 
@@ -405,6 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activeFilters.add('All');
         generateFilterButtons();
         
+        visibleCount = itemsPerPage;
         filterAndRender();
     }
 

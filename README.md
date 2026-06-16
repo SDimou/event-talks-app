@@ -16,6 +16,9 @@ A modern, responsive dashboard to monitor, search, filter, and share Google Clou
 * **Light/Dark Mode Toggle:** An actions-bar button that swaps the page color palette (clean slate and blues for light theme, deep navy and violet for dark theme) instantly via CSS custom variables, caching user preference in `localStorage`.
 * **Card Content Collapse ("Read More"):** Truncates long release notes vertically with a smooth bottom gradient fade and an animated toggle to keep page scrolling clean.
 * **Smooth Color Transitions:** Applies fluid CSS animations over background colors, typography, borders, and card frames on theme switches.
+* **Multi-Select Category Chips:** Allows users to select multiple release note types simultaneously (e.g., viewing *Features* and *Issues* together).
+* **Inline Search Clear:** Provides a quick `×` clear button inside the search box that resets keywords instantly.
+* **Floating Back-to-Top Button:** A scroll-reactive button that returns readers smoothly to the top of the release notes list.
 
 ---
 

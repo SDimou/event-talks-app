@@ -14,6 +14,8 @@ A modern, responsive dashboard to monitor, search, filter, and share Google Clou
 * **One-Click Copy:** Every card contains a "Copy Update" button that formats the type, date, and description for easy clipboard sharing.
 * **Export to CSV:** A header-level "Export CSV" button outputs the currently searched and filtered cards into a spreadsheet-ready `.csv` file.
 * **Light/Dark Mode Toggle:** An actions-bar button that swaps the page color palette (clean slate and blues for light theme, deep navy and violet for dark theme) instantly via CSS custom variables, caching user preference in `localStorage`.
+* **Card Content Collapse ("Read More"):** Truncates long release notes vertically with a smooth bottom gradient fade and an animated toggle to keep page scrolling clean.
+* **Smooth Color Transitions:** Applies fluid CSS animations over background colors, typography, borders, and card frames on theme switches.
 
 ---
 
